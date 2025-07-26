@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spin the Wheel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #f5f5f5;
+        }
+        #wheel {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: 8px solid #333;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            transform: rotate(0deg);
+        }
+        .wheel-option {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: bottom right;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px #000;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 18px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Spin the Wheel!</h1>
+    <div id="wheel"></div>
+    <button onclick="spinWheel()">SPIN!</button>
+    <div id="result"></div>
+
+    <script>
+        const options = ["Prize 1", "Prize 2", "Prize 3", "Prize 4", "Prize 5"];
+        const colors = ["#FF5733", "#33FF57", "#3357FF", "#F3FF33", "#FF33F3"];
+        const wheel = document.getElementById("wheel");
+        const result = document.getElementById("result");
+
+        // Create wheel segments
+        function createWheel() {
+            const angle = 360 / options.length;
+            for (let i = 0; i < options.length; i++) {
+                const segment = document.createElement("div");
+                segment.className = "wheel-option";
+                segment.style.transform = `rotate(${angle * i}deg)`;
+                segment.style.backgroundColor = colors[i];
+                segment.textContent = options[i];
+                wheel.appendChild(segment);
+            }
+        }
+
+        // Spin the wheel
+        function spinWheel() {
+            const spinDegrees = 1800 + Math.floor(Math.random() * 360);
+            wheel.style.transform = `rotate(${spinDegrees}deg)`;
+            
+            // Calculate the result after spinning
+            setTimeout(() => {
+                const normalizedDegrees = spinDegrees % 360;
+                const optionIndex = Math.floor(normalizedDegrees / (360 / options.length));
+                const winningOption = options[options.length - 1 - optionIndex];
+                result.textContent = `You won: ${winningOption}!`;
+            }, 4000);
+        }
+
+        createWheel();
+    </script>
+</body>
+</html>
